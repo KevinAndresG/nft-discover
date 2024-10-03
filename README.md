@@ -1,29 +1,46 @@
-# Create T3 App
+# Interview Take Home Project
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+Details:
 
-## What's next? How do I make an app with this?
+- You have two hours to complete the test
+- When you are ready to take the test, we will send you the test description. You must email a zip of your project to [wesley@surefx.xyz](mailto:wesley@surefx.xyz) at the two hour mark.
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+Overview:
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+- You will be creating an NFT app that reads data from the blockchain.
+- You might not complete the test, but try to leave the project in as polished of a state as possible. We prefer something that is better built with less functionality than something that is rushed and buggy. Try to take the last 15 minutes of the test to clean up the project as much as possible.
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+Specs:
 
-## Learn More
+- Create an app that consumes the Alchemy API to show the NFTs owned by a specific wallet address. ✅
+- Show the list of NFTs including the picture in a pleasant way. ✅
+- Filter the nfts by number, collection name, and date ✅
+- Ability to search by arbitrary address, but the default should be "vitalik.eth” as shown in the docs. ✅
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+The libraries you will use:
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+- React & React hooksf ✅
+- Typescript ✅
+- Tailwind (Or whatever CSS framework you prefer, but tailwind comes with the boilderplate) ✅
+- Nextjs ✅
+- Alchemy SDK ✅
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+Please create the project with https://create.t3.gg/ boilerplate. Use the demo alchemy api key and the docs from here (https://docs.alchemy.com/reference/nft-api-quickstart#3-choose-a-library).
 
-## How do I deploy this?
+Some things:
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+- Use any tools that you want, including AI, but you must be prepared to explain every line of code in the project
+- You can add additional libraries but you must use the libraries listed above
+- Expect us to QA the app aggressively and find any bugs or mistakes
+- Don’t bother writing tests, there’s not enough time
+- You can use whatever CSS framework you want, including vanilla CSS, Sass, Chakra… ect. However we recommend you don’t spend more then a few minutes setting up your CSS system and tailwind comes with the boilerplate. Basically, we want you to prove to us that you have strong CSS skills.
+
+Bonus Points:
+
+- If the UI looks great (default classes and colors are fine, but the layout of the app should be clean and make sense)
+- The results are paginated
+- You add additional filter types
+- The app is optimized
+- You build using App Router
+
+Good luck!
