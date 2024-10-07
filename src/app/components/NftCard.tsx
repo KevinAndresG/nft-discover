@@ -8,7 +8,7 @@ interface NftCardProps {
 }
 const NftCard: React.FC<NftCardProps> = ({ nft }) => {
   return (
-    <div className="rounded-lg bg-white p-4 shadow-lg">
+    <div className="rounded-lg border border-gray-300 bg-gray-200 p-4 shadow-md">
       <img
         width={120}
         height={120}

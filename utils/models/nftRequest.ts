@@ -1,3 +1,5 @@
+import { OwnedNft } from "alchemy-sdk";
+
 export interface NFTRequest {
   contract: Contract;
   tokenId: string;
@@ -74,4 +76,9 @@ export interface Raw {
   tokenUri: string;
   metadata: unknown;
   error: null;
+}
+
+export interface NftData {
+  nftsForOwner: OwnedNft[];
+  totalNfts: number;
 }

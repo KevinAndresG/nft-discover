@@ -4,6 +4,7 @@ import { type OwnedNft } from "alchemy-sdk";
 import { useEffect, useState } from "react";
 import { getNftsForOwner } from "utils/alchemy-sdk-script";
 import NftCard from "./components/NftCard";
+import { type NftData } from "utils/models/nftRequest";
 
 export default function HomePage() {
   const [address, setAddress] = useState("vitalik.eth"); // Dirección por defecto
@@ -13,16 +14,24 @@ export default function HomePage() {
   const [nftNumber, setNftNumber] = useState<string>("");
   const [collectionName, setCollectionName] = useState<string>("");
   const [date, setDate] = useState<string>("");
+  const [noSpam, setNoSpam] = useState(false);
+  const [nftFullData, setNftFullData] = useState(0);
 
   // Efecto que carga los NFTs de la dirección por defecto al montar el componente
   useEffect(() => {
-    void fetchNFTs(address);
+    void fetchNFTs(address, false);
   }, [address]);
 
   // Función para buscar los NFTs de una dirección que se le pase en este caso vitalik.eth
-  const fetchNFTs = async (address: string) => {
-    const nftsRequest: OwnedNft[] = await getNftsForOwner(address);
-    setNfts(nftsRequest);
+  const fetchNFTs = async (address: string, noSpam: boolean) => {
+    const nftsForOwner: NftData = await getNftsForOwner(address, noSpam);
+    setNftFullData(nftsForOwner.totalNfts);
+    setNfts(nftsForOwner.nftsForOwner);
+  };
+
+  const filterSpam = async () => {
+    await fetchNFTs(address, !noSpam);
+    setNoSpam(!noSpam);
   };
 
   useEffect(() => {
@@ -35,6 +44,7 @@ export default function HomePage() {
 
       return matchesNumber && matchesCollection && matchesDate;
     });
+    console.log("filteredNfts: ", filteredNfts);
     setDefNfts(filteredNfts);
   }, [nftNumber, collectionName, date, nfts]);
 
@@ -58,20 +68,29 @@ export default function HomePage() {
 
       {/* Formulario de búsqueda */}
       <form className="flex flex-col space-y-4">
-        <input
-          type="text"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-          className="w-2/3 rounded border p-2"
-          placeholder="Enter wallet address"
-        />
+        <div className="flex space-x-4">
+          <input
+            type="text"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            className="w-2/3 rounded border p-2 shadow-md outline-none focus:border-cyan-600"
+            placeholder="Enter wallet address"
+          />
+          <button
+            className="w-2/6 rounded border border-gray-300 bg-gray-200 p-2 shadow-md transition-colors duration-200 hover:bg-gray-300"
+            type="button"
+            onClick={filterSpam}
+          >
+            Filter Spam: {noSpam ? "ON" : "OFF"}
+          </button>
+        </div>
         <input
           type="text"
           placeholder="NFT Number"
           value={nftNumber}
           name="nftNumber"
           onChange={handleFormAllFilters}
-          className="border p-2"
+          className="border p-2 shadow-md outline-none focus:border-cyan-600"
         />
         <input
           type="text"
@@ -79,23 +98,30 @@ export default function HomePage() {
           value={collectionName}
           name="collectionName"
           onChange={handleFormAllFilters}
-          className="border p-2"
+          className="border p-2 shadow-md outline-none focus:border-cyan-600"
         />
         <input
           type="date"
           value={date}
           name="date"
           onChange={handleFormAllFilters}
-          className="border p-2"
+          className="border p-2 shadow-md outline-none focus:border-cyan-600"
         />
       </form>
 
       {/* Listado de NFTs */}
-      <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
-        {defNfts.map((nft, index) => (
-          <NftCard key={nft.contract.address + index} nft={nft} />
-        ))}
-      </div>
+      <p className="my-4 text-center text-sm">
+        NFTS {defNfts.length} / {nftFullData}
+      </p>
+      {defNfts.length > 0 ? (
+        <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {defNfts.map((nft, index) => (
+            <NftCard key={nft.contract.address + index} nft={nft} />
+          ))}
+        </div>
+      ) : (
+        <p className="mt-4 text-center text-sm">No NFTs found</p>
+      )}
     </div>
   );
 }

@@ -1,4 +1,5 @@
-import { Network, Alchemy } from "alchemy-sdk";
+import { Network, Alchemy, NftFilters } from "alchemy-sdk";
+import { type NftData } from "./models/nftRequest";
 
 const settings = {
   apiKey: "demo",
@@ -7,13 +8,23 @@ const settings = {
 
 const alchemy = new Alchemy(settings);
 
-export const getNftsForOwner = async (address: string) => {
+export const getNftsForOwner = async (
+  address: string,
+  noSpam: boolean,
+): Promise<NftData> => {
   try {
-    const nftsForOwner = await alchemy.nft.getNftsForOwner(address);
-    return nftsForOwner.ownedNfts;
+    const nftsForOwner = !noSpam
+      ? await alchemy.nft.getNftsForOwner(address)
+      : await alchemy.nft.getNftsForOwner(address, {
+          excludeFilters: [NftFilters.SPAM],
+        });
+    return {
+      nftsForOwner: nftsForOwner.ownedNfts,
+      totalNfts: nftsForOwner.totalCount,
+    };
   } catch (error) {
     console.error("Error fetching NFTs:", error);
-    return [];
+    return { nftsForOwner: [], totalNfts: 0 };
   }
 };
 
